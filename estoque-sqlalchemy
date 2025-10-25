@@ -1,0 +1,133 @@
+from sqlalchemy import create_engine, Column, String, Integer, Float, Boolean
+from sqlalchemy.orm import sessionmaker, declarative_base
+
+# Conexão com o banco de dados MySQL
+db = create_engine("mysql://jaquealves:senha_123@localhost/estoque")
+
+# Sessão para executar comandos no banco
+Session = sessionmaker(bind=db)
+session = Session()
+
+# Classe base do SQLAlchemy
+Base = declarative_base()
+
+
+# ===============================
+# TABELA CLIENTES
+# ===============================
+class Cliente(Base):
+    __tablename__ = "clientes"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    nome = Column(String(30))
+    nascimento = Column(Integer)
+    sexo = Column(String(1))
+    telefone = Column(Integer)
+    email = Column(String(30))
+    ativo = Column(Boolean, default=True)
+
+    def __init__(self, nome, nascimento, sexo, telefone, email, ativo=True):
+        self.nome = nome
+        self.nascimento = nascimento
+        self.sexo = sexo
+        self.telefone = telefone
+        self.email = email
+        self.ativo = ativo
+
+
+# ===============================
+# TABELA PRODUTOS
+# ===============================
+class Produto(Base):
+    __tablename__ = "produtos"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    codigo = Column(Integer)
+    modelo = Column(String(20))
+    cor = Column(String(10))
+    sexo = Column(String(1))
+    preco = Column(Float)
+    quantidade = Column(Integer)
+    tamanho = Column(String(2))
+    ativo = Column(Boolean, default=True)
+
+    def __init__(self, codigo, modelo, cor, sexo, preco, quantidade, tamanho, ativo=True):
+        self.codigo = codigo
+        self.modelo = modelo
+        self.cor = cor
+        self.sexo = sexo
+        self.preco = preco
+        self.quantidade = quantidade
+        self.tamanho = tamanho
+        self.ativo = ativo
+
+
+# ===============================
+# TABELA LOCALIZAÇÃO
+# ===============================
+class Localizacao(Base):
+    __tablename__ = "localizacao"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    codigo = Column(String(50))
+    localproduto = Column(Boolean)
+    ativo = Column(Boolean, default=True)
+
+    def __init__(self, codigo, localproduto, ativo=True):
+        self.codigo = codigo
+        self.localproduto = localproduto
+        self.ativo = ativo
+
+
+# ===============================
+# TABELA ENTRADA DE ESTOQUE
+# ===============================
+class Entrada(Base):
+    __tablename__ = "entradas"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    quantidade = Column(String(50))
+    codigo = Column(String(10))
+    modelo = Column(String(10))
+    tamanho = Column(String(2))
+    cor = Column(String(10))
+    sexo = Column(String(1))
+    ativo = Column(Boolean, default=True)
+
+    def __init__(self, quantidade, codigo, modelo, tamanho, cor, sexo, ativo=True):
+        self.quantidade = quantidade
+        self.codigo = codigo
+        self.modelo = modelo
+        self.tamanho = tamanho
+        self.cor = cor
+        self.sexo = sexo
+        self.ativo = ativo
+
+
+# ===============================
+# TABELA SAÍDA DE ESTOQUE
+# ===============================
+class Saida(Base):
+    __tablename__ = "saidas"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    quantidade = Column(String(50))
+    codigo = Column(String(10))
+    modelo = Column(String(10))
+    tamanho = Column(String(2))
+    cor = Column(String(10))
+    sexo = Column(String(1))
+    ativo = Column(Boolean, default=True)
+
+    def __init__(self, quantidade, codigo, modelo, tamanho, cor, sexo, ativo=True):
+        self.quantidade = quantidade
+        self.codigo = codigo
+        self.modelo = modelo
+        self.tamanho = tamanho
+        self.cor = cor
+        self.sexo = sexo
+        self.ativo = ativo
+
+
+# Cria as tabelas no banco de dados (se ainda não existirem)
+Base.metadata.create_all(bind=db)
